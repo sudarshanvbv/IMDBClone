@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { chunk } from "lodash";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
-import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
 
 function Movies() {
   var [isLoading, setLoading] = useState(true);
   var [moviesList, setMovieList] = useState([[]]);
   var [pg, setpg] = useState(0);
   var [isDisabled,setDisable]=useState(false)
+  var [Watchlist, setWatchlist] = useState([]);
+  var dummyMovies= new Array( 14 )
   function increment(){
     setpg(pg+1)
   }
@@ -36,12 +35,17 @@ function Movies() {
       .then((data) => {
         data = chunk(data, 14);
         console.log(data)
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000);
         setLoading(false);
         localStorage.setItem("moviesList", JSON.stringify(data));
         setMovieList(data);
       });
     }else{
+      setTimeout(() => {
       setLoading(false);
+    }, 2000);
       setMovieList(movieList)
     }
   }, []);
@@ -54,8 +58,28 @@ function Movies() {
   
   })
 
-  function Favorite(e) {
-    console.log(e)
+  function isFavorite(movieId) {
+    var watchlist=JSON.parse(localStorage.getItem("Watchlist"))
+    if(watchlist){
+      return watchlist.some((movie)=>movie.id===movieId)
+    }else{
+      return false
+    }
+  }
+
+  if(isLoading){
+    return (
+      <main className="flex flex-wrap justify-evenly">
+      {moviesList[pg].map((movie,index) => (
+        <section
+          key={index}
+          className="rounded-lg bg-cover bg-emerald-900 bg-center shadow-xl border m-4 h-50 w-40 font-bold flex justify-center items-end hover:scale-110 duration-300 hover:cursor-pointer animate-pulse"
+          
+        >
+        </section>
+      ))}
+    </main>
+    )
   }
 
   return (
@@ -64,11 +88,13 @@ function Movies() {
       {moviesList[pg].map((movie) => (
         <section
           key={movie.id}
-          className="relative rounded-lg bg-cover bg-center shadow-xl border m-4 h-50 w-40 font-bold flex justify-center items-end hover:scale-110 duration-300 hover:cursor-pointer"
+          className="group relative rounded-lg bg-cover bg-center shadow-xl border m-4 h-50 w-40 font-bold flex justify-center items-end hover:scale-110 duration-300 hover:cursor-pointer"
           style={{ backgroundImage: `url(${movie.primaryImage})`}}
-          onClick={Favorite}
+          
         >
-          <div className="absolute top-1 right-1 flex items-center justify-center w-10 h-10 bg-gray-400 rounded-lg text-xl">🤍</div>
+          <div className="absolute top-1 right-1 flex items-center justify-center w-10 h-10 bg-gray-400 rounded-lg text-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          {isFavorite(movie.id) ?"❤️" :"🤍"}
+            </div>
           
           <div className="w-full rounded-lg text-white text-center bg-blue-500 bg-opacity-50 p-4 p-4" style={{
               backgroundColor: 'rgba(0, 128, 0, 0.5)',
