@@ -64,7 +64,7 @@ function Movies() {
       {moviesList[pg].map((movie) => (
         <section
           key={movie.id}
-          className="rounded-lg bg-cover bg-center shadow-xl border m-4 h-50 w-40 font-bold flex justify-center items-end hover:scale-110 duration-300 hover:cursor-pointer"
+          className="relative rounded-lg bg-cover bg-center shadow-xl border m-4 h-50 w-40 font-bold flex justify-center items-end hover:scale-110 duration-300 hover:cursor-pointer"
           style={{ backgroundImage: `url(${movie.primaryImage})`}}
           onClick={Favorite}
         >
