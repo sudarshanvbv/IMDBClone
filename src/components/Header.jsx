@@ -4,10 +4,10 @@ function Header(){
     return (
 <header className="flex p-1">
       <div className="m-2">
-        <button className="">Home</button>
+        <button className="font-bold text-white">Home</button>
       </div>
       <div className="m-2">
-        <button className="">Watchlist</button>
+        <button className="font-bold text-white">Watchlist</button>
       </div>
     </header>
     )

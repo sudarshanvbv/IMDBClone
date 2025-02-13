@@ -5,7 +5,7 @@ import Movies from "./Movies";
 
 function Home() {
   return (
-    <div>
+    <div className="bg-green-800">
     <Header/>
     <Banner/>
     <Movies/>
