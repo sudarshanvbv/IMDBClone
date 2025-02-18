@@ -1,13 +1,14 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Header(){
     return (
 <header className="flex p-1">
       <div className="m-2">
-        <button className="font-bold text-white">Home</button>
+        <Link className="font-bold text-white" to={"/"}>HOME</Link>
       </div>
       <div className="m-2">
-        <button className="font-bold text-white">Watchlist</button>
+        <Link className="font-bold text-white" to={"/watchlist"}>WATCHLIST</Link>
       </div>
     </header>
     )
