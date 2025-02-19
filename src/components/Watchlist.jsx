@@ -20,7 +20,12 @@ function Watchlist() {
     var [genres, setGenre] = useState([])
     var [searchflag, setSearchflag] = useState(false)
     useEffect(() => {
-        setWatchlist(JSON.parse(localStorage.getItem("Watchlist")))
+        var movies= JSON.parse(localStorage.getItem("Watchlist")) ?? []
+        if(!movies){
+            localStorage.setItem("Watchlist", "[]")
+        }
+        setWatchlist(movies)
+
     }, [])
 
     function handleDelete(movieID) {
