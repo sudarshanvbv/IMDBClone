@@ -4,9 +4,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import { faSort } from "@fortawesome/free-solid-svg-icons/faSort";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons/faMagnifyingGlass";
+import { faCaretUp } from "@fortawesome/free-solid-svg-icons/faCaretUp";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons/faCaretDown";
 
 function Watchlist() {
     var [Watchlist, setWatchlist] = useState([]);
+    var [movieascending, setmovascend] = useState(false);
+    var [moviedescending, setmovdescent] = useState(false);
+    var [movieunsorted, setmovUnsort] = useState(true);
+    var [ratingascending, setRateascend] = useState(false);
+    var [ratingdescending, setRatedescent] = useState(false);
+    var [ratingunsorted, setRateUnsort] = useState(true);
 
     useEffect(() => {
         setWatchlist(JSON.parse(localStorage.getItem("Watchlist")))
@@ -19,23 +27,58 @@ function Watchlist() {
         localStorage.setItem("Watchlist", JSON.stringify(movies))
     }
 
-    function sortMovie(){
+    function sortMovie() {
+
+        // console.log(JSON.stringify(Watchlist))
+        var watched = [...Watchlist]
         
-        console.log(JSON.stringify(Watchlist))
-        var watched= [...Watchlist]
-        var newWatchlist= watched.sort((a,b)=>{
-            return a.avgRating-b.avgRating
-        })
+
+        if(movieunsorted){
+            var newWatchlist = watched.sort((a, b) => {
+                return a.title.localeCompare(b.title)
+            })
+            setmovUnsort(false);
+            setmovascend(true);
+        }
+        if(movieascending){
+            var newWatchlist = watched.sort((a, b) => {
+                return b.title.localeCompare(a.title)
+            })
+            setmovascend(false);
+            setmovdescent(true)
+        }
+        if(moviedescending){
+            
+            var newWatchlist = JSON.parse(localStorage.getItem("Watchlist"))
+            setmovdescent(false)
+            setmovUnsort(true)
+        }
         setWatchlist(newWatchlist)
     }
 
-    function sortRating(){
-        
-        console.log(JSON.stringify(Watchlist))
-        var watched= [...Watchlist]
-        var newWatchlist= watched.sort((a,b)=>{
-            return a.title.localeCompare(b.title)
-        })
+    function sortRating() {
+
+        // console.log(JSON.stringify(Watchlist))
+        var watched = [...Watchlist]
+        if (ratingunsorted) {
+            var newWatchlist = watched.sort((a, b) => {
+                return a.avgRating - b.avgRating
+            })
+            setRateUnsort(false);
+            setRateascend(true)
+        }
+        if (ratingascending) {
+            var newWatchlist = watched.sort((a, b) => {
+                return b.avgRating - a.avgRating
+            })
+            setRateascend(false);
+            setRatedescent(true);
+        }
+        if (ratingdescending) {
+            var newWatchlist = JSON.parse(localStorage.getItem("Watchlist"))
+            setRatedescent(false);
+            setRateUnsort(true);
+        }
         setWatchlist(newWatchlist)
     }
 
@@ -58,12 +101,29 @@ function Watchlist() {
                     <thead className="text-lg text-emerald-700 uppercase bg-emerald-50 dark:bg-emerald-700 dark:text-emerald-400">
                         <tr className="text-center">
                             <th>Title
-                            <button  onClick={sortMovie}><FontAwesomeIcon className="text-white px-2" icon={faSort}/></button></th>
+                                {
+                                    movieunsorted?
+                                    <FontAwesomeIcon onClick={sortMovie} className="text-white px-2" icon={faSort} />
+                                    : movieascending?
+                                    <FontAwesomeIcon onClick={sortMovie} className="text-white px-2" icon={faCaretUp} />
+                                    : 
+                                    <FontAwesomeIcon onClick={sortMovie} className="text-white px-2" icon={faCaretDown} />
+                                }
+                                </th>
+                                
                             <th>Movie</th>
                             <th>Genre(s)
                             </th>
                             <th>Average Rating
-                            <FontAwesomeIcon onClick={sortMovie} className="text-white px-2" icon={faSort} />
+                                
+                                {
+                                    ratingunsorted?
+                                    <FontAwesomeIcon onClick={sortRating} className="text-white px-2" icon={faSort} />
+                                    : ratingascending?
+                                    <FontAwesomeIcon onClick={sortRating} className="text-white px-2" icon={faCaretUp} />
+                                    : 
+                                    <FontAwesomeIcon onClick={sortRating} className="text-white px-2" icon={faCaretDown} />
+                                }
                             </th>
                             <th>Delete</th>
                         </tr>
