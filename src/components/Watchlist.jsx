@@ -57,7 +57,7 @@ function Watchlist() {
         }
         if (moviedescending) {
 
-            var newWatchlist = JSON.parse(localStorage.getItem("Watchlist"))
+            var newWatchlist = watched
             setmovdescent(false)
             setmovUnsort(true)
         }
@@ -83,7 +83,7 @@ function Watchlist() {
             setRatedescent(true);
         }
         if (ratingdescending) {
-            var newWatchlist = JSON.parse(localStorage.getItem("Watchlist"))
+            var newWatchlist = watched
             setRatedescent(false);
             setRateUnsort(true);
         }
@@ -99,6 +99,7 @@ function Watchlist() {
         genre = new Set(genre);
         genre = [...genre]
         setGenre(genre)
+        
     }
 
     function handleFilterSelect() {
